@@ -1,0 +1,93 @@
+/* Speciality Section */
+.doctor-section {
+    text-align: center;
+    padding: 40px 5%;
+  }
+  
+  /* Header */
+  .doctor-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+  }
+  
+  .icon-circle {
+    background-color: #39CABB;;
+    padding: 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* View All Link */
+  .view-all {
+    margin-left: auto;
+    font-size: 14px;
+    text-decoration: none;
+    color: #1ccbe2;
+    font-weight: bold;
+  }
+  
+  .view-all:hover {
+    text-decoration: underline;
+  }
+  
+  /* Speciality Categories */
+  .doctor-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  
+  /* Speciality Card */
+  .speciality-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #39CABB;
+    padding: 25px;
+    border-radius: 70%;
+    width: 150px;
+    height: 150px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .speciality-card:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Speciality Icon */
+  .speciality-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    margin-bottom: 5px;
+  }
+  
+  /* Speciality Name */
+  .speciality-card p {
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .doctor-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .speciality-card {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  

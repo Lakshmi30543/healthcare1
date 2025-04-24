@@ -1,0 +1,383 @@
+/* Base Health Programs Section */
+.health-programs-section {
+  padding: 4rem 0;
+  background: linear-gradient(to bottom right, #f8fafc, #e6faf8);
+}
+
+.health-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Section Header */
+/* Health Section Header with Special Underline */
+.health-section-header h2 {
+  margin-top: -90px;
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: black; /* clean, modern teal */
+  position: relative;
+  display: inline-block;
+}
+
+.health-section-header h2::after {
+  content: '';
+  display: block;
+  width: 60%;
+  height: 3px;
+  background-color: #14b8a6;
+  margin: 8px auto 0;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.health-section-header h2:hover::after {
+  width: 90%;
+  background-color: #0ea5e9; /* subtle hover transition */
+}
+.health-section-header h2 {
+  text-decoration: none !important;
+  border: none !important;
+}
+
+/* Keep the section header centered */
+.health-section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Programs Row Layout */
+.health-programs-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Program Item */
+.health-program-item {
+  position: relative;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.health-program-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(57, 202, 187, 0.15);
+}
+
+/* Program Image */
+.health-program-image {
+  position: relative;
+  height: 160px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.health-program-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.health-program-item:hover .health-program-image img {
+  transform: scale(1.1);
+}
+
+/* Program Content */
+.health-program-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Program Heading - Left aligned with teal underline */
+.health-program-heading {
+  font-size: 1.25rem;
+  color: #333; /* Black text */
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  text-align: left;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.health-program-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: #39CABB; /* Teal underline */
+  border-radius: 2px;
+}
+
+/* Program Description - Limited to 2 lines */
+.health-program-description {
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  height: 3em; /* Fixed height for 2 lines */
+}
+
+/* Program Button */
+.health-program-btn {
+  background-color: transparent;
+  color: #39CABB;
+  border: 2px solid #39CABB;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.health-program-btn:hover {
+  background-color: #39CABB;
+  color: white;
+}
+
+/* View More Container */
+.health-view-more-container {
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  grid-column: 1 / -1; /* Make it span all columns */
+}
+
+/* View More Button */
+.health-view-more-btn {
+  background-color: transparent;
+  color: #39CABB;
+  border: 2px solid #39CABB;
+  padding: 0.85rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.health-view-more-btn:hover {
+  background-color: #39CABB;
+  color: white;
+}
+
+/* Program Details View */
+.health-program-details {
+  background-color: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.health-program-details::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #39CABB;
+  border-radius: 16px 16px 0 0;
+}
+
+/* Back Button */
+.health-back-button {
+  background: none;
+  border: none;
+  color: #39CABB;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 2rem;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.health-back-button:hover {
+  opacity: 0.8;
+}
+
+/* Program Detail Header */
+.health-program-detail-header {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.health-program-detail-header h3 {
+  font-size: 2.2rem;
+  color: #333;
+  text-align: center;
+  position: relative;
+  padding-bottom: 0.8rem;
+  display: inline-block;
+}
+
+.health-program-detail-header h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #39CABB;
+  border-radius: 3px;
+}
+
+/* Program Detail Body */
+.health-program-detail-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+/* Program Large Image */
+.health-program-image-large {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.health-program-image-large img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Program Full Description */
+.health-program-full-description {
+  color: #475569;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  padding-left: 1rem;
+  border-left: 3px solid #39CABB;
+}
+
+/* Program Services */
+.health-program-services h4 {
+  color: #333;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  text-align: left;
+  padding-bottom: 0.8rem;
+}
+
+.health-program-services h4::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: #39CABB;
+  border-radius: 3px;
+}
+
+.health-program-services ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.health-program-services li {
+  padding: 1rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.health-program-services li:hover {
+  transform: translateX(5px);
+}
+
+.health-program-services li:before {
+  content: "•";
+  color: #39CABB;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-right: 0.5rem;
+}
+
+/* Appointment Button */
+.health-appointment-button {
+  background-color: #39CABB;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 2rem;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(57, 202, 187, 0.3);
+}
+
+.health-appointment-button:hover {
+  background-color: #33b5a7;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(57, 202, 187, 0.4);
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+  .health-programs-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .health-programs-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .health-program-detail-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .health-programs-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .health-programs-row {
+    grid-template-columns: 1fr;
+  }
+}

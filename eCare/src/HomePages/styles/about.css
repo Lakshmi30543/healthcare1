@@ -1,0 +1,197 @@
+
+/* Aboutus css */
+.about-us-container {
+    padding: 80px 20px;
+    background-color: #f8fafc;
+  }
+  
+  .about-us-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+  }
+  
+  /* Images section */
+  .about-us-images {
+    flex: 1;
+    position: relative;
+    height: 600px;
+  }
+  
+  .image-wrapper {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    position: absolute;
+  }
+  
+  .primary-image {
+    width: 75%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+  }
+  
+  .secondary-image {
+    width: 60%;
+    z-index: 2;
+    right: 0;
+    bottom: 50px;
+    background-color: white;
+    padding: 10px;
+  }
+  
+  .about-image-1, .about-image-2 {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 5px;
+  }
+  
+  .experience-badge {
+    position: absolute;
+    left: -20px;
+    top: -20px;
+    background-color: #14b8a6;
+    color: white;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(20, 184, 166, 0.3);
+  }
+  
+  .experience-badge .years {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+  }
+  
+  .experience-badge .text {
+    font-size: 12px;
+    text-align: center;
+  }
+  
+  /* Text section */
+  .about-us-text {
+    flex: 1;
+    padding: 20px 0;
+  }
+  
+  .section-subtitle {
+    display: inline-block;
+    color: #14b8a6;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  
+  .section-subtitle:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background-color: #14b8a6;
+  }
+  
+  .section-title {
+    font-size: 32px;
+    line-height: 1.3;
+    color: #1e293b;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .description {
+    color: #64748b;
+    line-height: 1.7;
+    margin-bottom: 25px;
+  }
+  
+  .services-list {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .services-list li {
+    display: flex;
+    align-items: center;
+    color: #334155;
+    font-weight: 500;
+  }
+  
+  .check-icon {
+    color: #14b8a6;
+    font-weight: bold;
+    margin-right: 10px;
+    background-color: rgba(20, 184, 166, 0.1);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+  
+  .discover-button {
+    background-color: #14b8a6;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
+  }
+  
+  .discover-button:hover {
+    background-color: #0f766e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(20, 184, 166, 0.3);
+  }
+  
+  
+  /* ProgramsSection.css */
+  .programs-section {
+    padding: 4rem 0;
+    background-color: #f8fbfd;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .section-header h2 {
+    font-size: 2.5rem;
+    color: #1e3a8a;
+    margin-bottom: 0.5rem;
+  }
+  
+  .section-header p {
+    font-size: 1.2rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
+  }

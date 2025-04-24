@@ -1,0 +1,73 @@
+/* Hero Section */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* This helps push content to edges */
+  background-color: rgb(204, 255, 255); /* Light Blue - keeping your original color */
+  padding: 30px 5%;
+  gap: 20px;
+  height: 500px; /* Fixed height */
+  max-width: 1400px; /* Limits width */
+  margin: auto; /* Centers the section */
+}
+
+/* Hero Text Content - Now positioned left */
+.hero-content {
+  flex: 1;
+  text-align: left;
+  max-width: 450px;
+  order: 1; /* Ensures this comes first in the flex container */
+}
+
+/* Hero Image - Now positioned right */
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end; /* Aligns image to the right */
+  order: 2; /* Ensures this comes second in the flex container */
+}
+/* Hero Button */
+.hero-btn {
+  padding: 10px 20px;
+  background-color: white;
+  color: #14b8a6;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.hero-btn:hover {
+  background-color: #14b8a6;
+  color: white;
+}
+
+/* Keep the image aligned to the right */
+.hero-image img {
+  max-width: 90%;
+  max-height: 350px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: opacity 1s ease-in-out;
+}
+
+/* For mobile, you might want to adjust the order */
+@media (max-width: 768px) {
+  .hero-section {
+      flex-direction: column;
+      text-align: center;
+      padding: 20px 5%;
+      height: auto;
+  }
+  
+  .hero-content, .hero-image {
+      order: 0; /* Reset order for mobile */
+  }
+  
+  .hero-image {
+      justify-content: center; /* Center image on mobile */
+  }
+}

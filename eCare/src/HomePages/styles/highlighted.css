@@ -1,0 +1,211 @@
+/* HighlightedDoctors.css */
+.highlighted-doctors h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+    font-weight: 700;
+    color: #14b8a6; /* clean, modern teal */
+    position: relative;
+    display: inline-block;
+  }
+  
+  .highlighted-doctors h2::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 3px;
+    background-color: #14b8a6;
+    margin: 8px auto 0;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  
+  .highlighted-doctors h2:hover::after {
+    width: 90%;
+    background-color: #0ea5e9; /* subtle hover transition */
+  }
+  
+  
+.highlighted-doctors {
+    margin-top: -25px;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .highlighted-doctors h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: bold;
+  }
+  .highlighted-doctors h2 {
+    text-decoration: none !important;
+    border: none !important;
+  }
+  
+  .carousel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+  
+  .doctors-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Changed from 4 to 3 columns */
+    gap: 30px; /* Increased gap */
+    margin-left: -100px;
+    max-width: 1200px; /* Increased max-width */
+    padding: 0 20px;
+  }
+  
+  .doctor-card {
+    background-color: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    min-width: 280px; /* Added minimum width */
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(20, 184, 166, 0.1);
+  }
+  
+  /* Redesigned card */
+  .doctor-card {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .doctor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Image container */
+  .image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 80%; /* Creates aspect ratio for image */
+    overflow: hidden;
+  }
+  
+  .doctor-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .doctor-card:hover .doctor-image {
+    transform: scale(1.05);
+  }
+  
+  /* Rating badge */
+  .doctor-rating {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #f5a623;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Card content */
+  .card-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: left;
+  }
+  
+  .doctor-info {
+    margin-bottom: 15px;
+  }
+  
+  .doctor-card h3 {
+    font-size: 16px;
+    color: #14b8a6;
+    margin: 0 0 5px;
+    font-weight: bold;
+  }
+  
+  .doctor-card h4 {
+    font-size: 16px;
+    color: #333;
+    margin: 0 0 8px;
+    font-weight: bold;
+  }
+  
+  .location-time {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+  }
+  
+  .separator {
+    margin: 0 5px;
+  }
+  
+  .fees {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  /* Book button */
+  .book-button {
+    background-color: #39CABB;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    margin-top: auto;
+    text-align: center;
+  }
+  
+  .book-button:hover {
+    background-color: #0d9488;
+  }
+  
+  /* Dots container styles */
+  .dots-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 25px;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .dot.active {
+    background-color: #14b8a6;
+    transform: scale(1.2);
+  }

@@ -1,0 +1,355 @@
+/* General Container */
+.air-patients-container {
+  margin-top: 50px;
+  margin-left: 220px;
+  padding: 20px;
+  background-color: #f8fafc;
+  min-height: calc(100vh - 80px);
+  transition: all 0.3s ease;
+  overflow-x: hidden;
+}
+
+.air-patients-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0f766e;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.air-search-bar {
+  max-width: 1150px;
+  height: 35px;
+  margin: 0 auto 20px;
+  margin-left: 0px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(15, 118, 110, 0.05);
+}
+
+.air-search-bar:focus-within {
+  box-shadow: 0 3px 12px rgba(15, 118, 110, 0.15);
+  transform: translateY(-2px);
+}
+
+.air-search-icon {
+  font-size: 0.8rem;
+  color: #0f766e;
+}
+
+.air-search-bar input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 0.8rem;
+  padding: 6px;
+  background: transparent;
+}
+
+.air-content-wrapper {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.air-patients-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 300px;
+}
+
+.air-patient-card {
+  background-color: white;
+  border-left: 3px solid #0f766e;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  height: 50px;
+}
+
+.air-patient-card:hover, .air-patient-card.air-selected {
+  transform: translateX(3px);
+  box-shadow: 0 2px 10px rgba(15, 118, 110, 0.15);
+  background-color: #f0fdfa;
+}
+
+.air-patient-card.air-selected {
+  border-left: 3px solid #29cabb;
+}
+
+.air-patient-image {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #0f766e;
+  padding: 1px;
+  background-color: white;
+  transition: transform 0.3s ease;
+}
+
+.air-patient-card:hover .air-patient-image {
+  transform: scale(1.05);
+}
+
+.air-patient-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.air-patient-info h3 {
+  font-size: 0.85rem;
+  color: #0f766e;
+  font-weight: 600;
+  margin: 0 0 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.air-patient-brief-info {
+  display: flex;
+  gap: 8px;
+}
+
+.air-patient-brief-info p {
+  font-size: 0.7rem;
+  color: #64748b;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.air-fixed-details-card {
+  flex: 1.5;
+  position: sticky;
+  top: 20px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 3px 12px rgba(15, 118, 110, 0.1);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  height: 430px;
+  width: 350px;
+  overflow: hidden;
+}
+
+.air-fixed-details-card:hover {
+  box-shadow: 0 4px 15px rgba(15, 118, 110, 0.15);
+}
+
+.air-patient-details-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.air-patient-details-header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #0f766e;
+  padding: 1px;
+  background-color: white;
+}
+
+.air-patient-details-header h3 {
+  color: #0f766e;
+  margin: 0 0 2px 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.air-patient-id {
+  color: #64748b;
+  font-size: 0.7rem;
+  margin: 0;
+}
+
+.air-details-section-title {
+  color: #0f766e;
+  font-size: 0.85rem;
+  margin: 8px 0 6px 0;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.air-patient-details-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.air-info-row {
+  display: flex;
+  gap: 6px;
+}
+
+.air-info-row .air-patient-details-item {
+  flex: 1;
+}
+
+.air-patient-details-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background-color: #f8fafc;
+  transition: all 0.3s ease;
+  font-size: 0.75rem;
+  min-height: 28px;
+}
+
+.air-patient-details-item:hover {
+  background-color: #f1f5f9;
+  transform: translateX(2px);
+}
+
+.air-patient-details-item svg {
+  color: #0f766e;
+  font-size: 0.75rem;
+  min-width: 14px;
+}
+
+.air-patient-details-item span {
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.air-treatment-plan {
+  min-height: 40px;
+  align-items: flex-start;
+  max-height: 60px;
+}
+
+.air-treatment-plan span {
+  padding-top: 1px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.air-patient-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.air-action-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.air-action-button.air-view-history {
+  background-color: #f0fdfa;
+  color: #0f766e;
+  border: 1px solid #0f766e;
+}
+
+.air-action-button.air-view-history:hover {
+  background-color: #0f766e;
+  color: white;
+}
+
+.air-action-button.air-schedule {
+  background-color: #0f766e;
+  color: white;
+}
+
+.air-action-button.air-schedule:hover {
+  background-color: #0e6b63;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(15, 118, 110, 0.2);
+}
+
+.air-no-patient-selected {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  gap: 8px;
+}
+
+.air-no-patient-selected p {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 1200px) {
+  .air-content-wrapper {
+    flex-direction: column;
+  }
+  
+  .air-patients-list {
+    max-width: 100%;
+  }
+  
+  .air-fixed-details-card {
+    position: static;
+    max-height: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .air-patients-container {
+    margin-left: 60px;
+    padding: 12px;
+  }
+  
+  .air-search-bar {
+    max-width: 100%;
+  }
+  
+  .air-patient-card {
+    padding: 6px;
+  }
+  
+  .air-patient-brief-info {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .air-patient-actions {
+    flex-direction: column;
+  }
+  
+  .air-info-row {
+    flex-direction: column;
+  }
+}

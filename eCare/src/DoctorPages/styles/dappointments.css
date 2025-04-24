@@ -1,0 +1,211 @@
+/* General Container */
+.water-appointments-container {
+  margin-top: 50px;
+  margin-left: 220px; 
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  min-height: 100vh;
+}
+
+/* Header */
+.water-appointments-header {
+  font-size: 22px;
+  font-weight: bold;
+  color: #0f766e;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Tab Navigation */
+.water-appointments-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.water-tab-button {
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.water-tab-button.active {
+  background-color: #29cabb;
+  color: white;
+}
+
+.water-tab-button:hover:not(.active) {
+  background-color: #e0e0e0;
+}
+
+/* No Appointments Message */
+.water-no-appointments {
+  text-align: center;
+  padding: 20px;
+  color: #64748b;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+/* Appointments List */
+.water-appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Appointment Card */
+.water-appointment-card {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #e0f2fe;
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: transform 0.2s, box-shadow 0.3s;
+  min-height: 60px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.water-appointment-card:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Patient Image */
+.water-patient-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+/* Appointment Details */
+.water-appointment-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.water-appointment-details h3 {
+  color: #0f766e;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Meta Info (Date, Time, Status in One Row) */
+.water-appointment-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.water-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Status Colors */
+.water-status-pending {
+  color: #ff9800;
+}
+
+.water-status-approved {
+  color: #29cabb;
+}
+
+.water-status-cancelled {
+  color: #e63946;
+}
+
+/* Action Buttons */
+.water-appointment-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Common Button Styling */
+.water-appointment-actions button {
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+/* Approve Button */
+.water-appointment-actions .water-approve-button {
+  background-color: #29cabb;
+}
+
+.water-appointment-actions .water-approve-button:hover {
+  background-color: #218f89;
+  transform: scale(1.05);
+}
+
+/* Reschedule Button */
+.water-appointment-actions .water-reschedule-button {
+  background-color: #ff9800;
+}
+
+.water-appointment-actions .water-reschedule-button:hover {
+  background-color: #e68900;
+  transform: scale(1.05);
+}
+
+/* Cancel Button */
+.water-appointment-actions .water-cancel-button {
+  background-color: #e63946;
+}
+
+.water-appointment-actions .water-cancel-button:hover {
+  background-color: #c92c3a;
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .water-appointments-container {
+    margin-left: 0;
+    padding: 15px;
+  }
+  
+  .water-appointment-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+  
+  .water-patient-image {
+    margin-bottom: 10px;
+  }
+  
+  .water-appointment-actions {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: space-between;
+  }
+}

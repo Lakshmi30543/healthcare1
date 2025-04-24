@@ -1,0 +1,78 @@
+/* Vaccination Page Container */
+.vaccination-container {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    padding: 40px;
+    text-align: center;
+  }
+  
+  /* Title Styling */
+  .vaccination-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Grid Layout */
+  .vaccination-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  /* Card Styling */
+  .vaccine-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .vaccine-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Image */
+  .vaccine-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* Title */
+  .vaccine-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 10px 0;
+    color: #444;
+  }
+  
+  /* Price */
+  .vaccine-price {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  /* Button */
+  .add-to-cart-btn {
+    background-color: #1ccbe2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .add-to-cart-btn:hover {
+    background-color: #17a2b8;
+  }
+  

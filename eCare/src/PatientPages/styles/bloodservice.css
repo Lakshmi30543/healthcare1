@@ -1,0 +1,49 @@
+/* Blood-Service */
+.blood-service-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .blood-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  
+  }
+  
+  .blood-card {
+    background: white;
+    color: rgb(2, 2, 2);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 150px;
+    box-shadow: 2px 2px 10px rgba(25, 165, 13, 0.2);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .blood-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .blood-price {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .apply-btn {
+    background: rgb(255, 255, 255);
+    color: #ff4d4d;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .apply-btn:hover {
+    background: #f5f5f5;
+  }
+  

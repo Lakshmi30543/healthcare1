@@ -1,0 +1,77 @@
+/* Admin Navbar Styles */
+.admin-navbar {
+  background-color: #1e3a8a; /* Deep Blue */
+  color: white;
+  padding: 0 30px; /* Padding adjusted for horizontal */
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically center the items */
+  height: 65px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 20;
+}
+
+.admin-navbar .logo h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center; /* Center the logo text */
+}
+
+.admin-navbar .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+  align-items: center; /* Vertically center the navigation links */
+}
+
+.admin-navbar .nav-links li {
+  display: inline;
+  line-height: 65px; /* Ensure the links are vertically centered */
+}
+
+.admin-navbar .nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: color 0.3s, background-color 0.3s;
+  display: flex;
+  align-items: center; /* Ensure the text is vertically centered */
+}
+
+.admin-navbar .nav-links li a:hover {
+  background-color: #14b8a6; /* Teal hover */
+  color: white;
+}
+
+.admin-navbar .logout-button {
+  background-color: #14b8a6; /* Teal */
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center; /* Vertically center the button text */
+}
+
+.admin-navbar .logout-button:hover {
+  background-color: #0d9488; /* Darker Teal */
+}
+
+.admin-content {
+  margin-top: 75px;
+  padding: 20px;
+}
