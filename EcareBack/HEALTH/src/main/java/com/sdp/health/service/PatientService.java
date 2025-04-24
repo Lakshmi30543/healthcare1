@@ -15,4 +15,8 @@ public interface PatientService {
     
     Appointment bookAppointment(AppointmentBookingDTO dto);
     List<Appointment> getAppointmentsByPatientId(Long patientId);
+    
+
+    Patient getPatientById(Long id);
+    Patient updatePatient(Long id, Patient patientDetails);
 }

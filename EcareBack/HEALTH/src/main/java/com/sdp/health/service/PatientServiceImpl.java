@@ -104,5 +104,26 @@ public class PatientServiceImpl implements PatientService {
     public List<Appointment> getAppointmentsByPatientId(Long patientId) {
         return appointmentRepository.findByPatientId(patientId);
     }
-
+    
+    @Override
+    public Patient getPatientById(Long id) {
+        return patientRepository.findById(id).orElse(null);  // Returns patient if found, otherwise null
+    }
+    @Override
+    public Patient updatePatient(Long id, Patient patientDetails) {
+        return patientRepository.findById(id)
+                .map(existingPatient -> {
+                    existingPatient.setFullName(patientDetails.getFullName());
+                    existingPatient.setUsername(patientDetails.getUsername());
+                    existingPatient.setPassword(patientDetails.getPassword());
+                    existingPatient.setDob(patientDetails.getDob());
+                    existingPatient.setEmail(patientDetails.getEmail());
+                    existingPatient.setContact(patientDetails.getContact());
+                    existingPatient.setGender(patientDetails.getGender());
+                    existingPatient.setBloodGroup(patientDetails.getBloodGroup());
+                    existingPatient.setAddress(patientDetails.getAddress());
+                    return patientRepository.save(existingPatient);
+                })
+                .orElse(null);
+    }
 }
