@@ -9,6 +9,7 @@ export default function Consultation() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
+  const [doctorImages, setDoctorImages] = useState({}); // <-- Add this line
   const navigate = useNavigate(); // ✅ Initialize
 
   const specializations = [
@@ -23,6 +24,27 @@ export default function Consultation() {
         const response = await axios.get(`${config.url}/eCare/patient/viewAllDoctors`);
         if (response.status === 200) {
           setDoctors(response.data);
+
+          // Fetch images for each doctor
+          const imagePromises = response.data.map(async (doctor) => {
+            try {
+              const imgRes = await axios.get(`${config.url}/eCare/doctor/profilepictureurl/${doctor.id}`);
+              let imgUrl = imgRes.data;
+              if (imgUrl && !imgUrl.startsWith('http')) {
+                imgUrl = imgUrl; // e.g., "/profile_pics/filename.jpg"
+              }
+              return { id: doctor.id, url: imgUrl };
+            } catch {
+              return { id: doctor.id, url: null };
+            }
+          });
+
+          const images = await Promise.all(imagePromises);
+          const imagesMap = {};
+          images.forEach(({ id, url }) => {
+            imagesMap[id] = url;
+          });
+          setDoctorImages(imagesMap);
         }
       } catch (error) {
         setError('Failed to fetch doctor data.');
@@ -67,6 +89,17 @@ export default function Consultation() {
         {filteredDoctors.map((doctor) => (
           <div key={doctor.id} className="doctor-card">
             <div className="doctor-info">
+              {/* Doctor Image */}
+              <img
+                src={doctorImages[doctor.id] || "/src/assets/images/doctor.png"}
+                alt={doctor.fullName}
+                className="doctor-profile-img"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/src/assets/images/doctor.png";
+                }}
+                style={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", marginBottom: 10 }}
+              />
               <h3>{doctor.fullName}</h3>
               <p><strong>Specialization:</strong> {doctor.specialization}</p>
               <p><strong>Experience:</strong> {doctor.experienceYears} years</p>

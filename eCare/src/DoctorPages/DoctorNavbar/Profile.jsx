@@ -12,7 +12,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const fileInputRef = useRef(null);
-  
+
   // Initialize with empty data
   const [doctorData, setDoctorData] = useState({
     name: "",
@@ -32,22 +32,26 @@ const Profile = () => {
     experience: [],
     specializations: []
   });
-  
+
   const [formData, setFormData] = useState({...doctorData});
-  
+
   // Fetch doctor data from backend
   useEffect(() => {
     const fetchDoctorData = async () => {
       try {
         setIsLoading(true);
         const doctorId = sessionStorage.getItem('userId');
-        
         // Fetch doctor data
         const response = await axios.get(`${config.url}/eCare/doctor/${doctorId}`);
-        
-        // Fetch profile picture URL
-        
-        
+        // Fetch profile picture URL (returns path as string)
+        const profilePicUrlRes = await axios.get(`${config.url}/eCare/doctor/profilepictureurl/${doctorId}`);
+        let profilePicUrl = profilePicUrlRes.data;
+
+        // If the path is not absolute, use it directly (public folder is root for static files)
+        if (profilePicUrl && !profilePicUrl.startsWith('http')) {
+          profilePicUrl = profilePicUrl; // e.g., "/profile_pics/filename.jpg"
+        }
+
         if (response.data) {
           const doctor = response.data;
           const formattedData = {
@@ -58,7 +62,7 @@ const Profile = () => {
             address: doctor.address || "",
             bio: doctor.bio || "No bio available",
             prize: doctor.prize || "",
-            avatar: doctor.profilePictureUrl || defaultAvatar, // assuming profilePictureUrl is a string URL.
+            avatar: profilePicUrl || defaultAvatar,
             username: doctor.username || "",
             password: doctor.password || "",
             dob: doctor.dob || "",
@@ -86,7 +90,7 @@ const Profile = () => {
               content: spec.description || ""
             })) : []
           };
-          
+
           setDoctorData(formattedData);
           setFormData(formattedData);
         }
@@ -99,7 +103,7 @@ const Profile = () => {
 
     fetchDoctorData();
   }, []);
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -107,7 +111,7 @@ const Profile = () => {
       [name]: value
     });
   };
-  
+
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -134,12 +138,12 @@ const Profile = () => {
       fileInputRef.current.click();
     }
   };
-  
+
   const handleSave = async () => {
     try {
       const doctorId = sessionStorage.getItem('userId');
       if (!doctorId) throw new Error('Doctor ID not found');
-  
+
       // 1. Build update JSON object
       const updateData = {
         fullName: formData.name,
@@ -158,16 +162,16 @@ const Profile = () => {
         prize: formData.prize || "",
         role: doctorData.role
       };
-  
+
       // 2. Create FormData and append JSON and image
       const formDataToSend = new FormData();
       formDataToSend.append("request", new Blob([JSON.stringify(updateData)], { type: "application/json" }));
-  
+
       // Only add file if new image was selected
       if (formData.avatar instanceof File) {
         formDataToSend.append("file", formData.avatar);
       }
-  
+
       // 3. Send request
       const response = await axios.put(
         `${config.url}/eCare/doctor/updatedoctor/${doctorId}`,
@@ -177,7 +181,7 @@ const Profile = () => {
           timeout: 10000
         }
       );
-  
+
       if (response.data) {
         setDoctorData(formData);
         setIsEditing(false);
@@ -196,13 +200,12 @@ const Profile = () => {
       alert(errorMessage);
     }
   };
-  
-  
+
   const handleCancel = () => {
     setFormData({...doctorData});
     setIsEditing(false);
   };
-  
+
   if (isLoading) {
     return (
       <div className="fire-profile-container">
@@ -210,7 +213,7 @@ const Profile = () => {
       </div>
     );
   }
-  
+
   return (
     <div className={`fire-profile-container ${isEditing ? 'fire-edit-mode' : ''}`}>
       <div className="fire-profile-content">
@@ -236,7 +239,11 @@ const Profile = () => {
           {!isEditing ? (
             <>
               <div className="fire-profile-basic-info">
-                <img src={doctorData.avatar} alt={doctorData.name} className="fire-profile-avatar" onError={(e) => {e.target.src = defaultAvatar}} />
+                <img src={
+                  typeof doctorData.avatar === 'string'
+                    ? doctorData.avatar
+                    : defaultAvatar
+                } alt={doctorData.name} className="fire-profile-avatar" onError={(e) => {e.target.src = defaultAvatar}} />
                 <div className="fire-profile-details">
                   <h2 className="fire-profile-name">{doctorData.name}</h2>
                   <p className="fire-profile-title">{doctorData.title}</p>
@@ -356,7 +363,11 @@ const Profile = () => {
                 <div className="fire-image-upload-container">
                   <div className="fire-profile-image-edit" onClick={handleImageClick}>
                     <img 
-                     src={doctorData.avatar} 
+                      src={
+                        formData.avatar instanceof File
+                          ? URL.createObjectURL(formData.avatar)
+                          : (typeof formData.avatar === 'string' ? formData.avatar : defaultAvatar)
+                      }
                       alt="Profile" 
                       className="fire-profile-avatar" 
                       onError={(e) => {e.target.src = defaultAvatar}}
@@ -510,8 +521,6 @@ const Profile = () => {
                   />
                 </div>
 
-                
-                
                 <div className="fire-form-group">
                   <label htmlFor="address">Address</label>
                   <input 

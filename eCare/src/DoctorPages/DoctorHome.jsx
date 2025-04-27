@@ -65,6 +65,7 @@ const DoctorHome = () => {
     appointments: 0,
     activePatients: 0
   });
+  const [profilePicUrl, setProfilePicUrl] = useState(""); // <-- Add this line
 
   // Fetch doctor data from backend
   useEffect(() => {
@@ -75,6 +76,14 @@ const DoctorHome = () => {
         
         const response = await axios.get(`${config.url}/eCare/doctor/${doctorId}`);
         
+        // Fetch profile picture URL (returns path as string)
+        const profilePicUrlRes = await axios.get(`${config.url}/eCare/doctor/profilepictureurl/${doctorId}`);
+        let picUrl = profilePicUrlRes.data;
+        if (picUrl && !picUrl.startsWith('http')) {
+          picUrl = picUrl; // e.g., "/profile_pics/filename.jpg"
+        }
+        setProfilePicUrl(picUrl);
+
         if (response.data) {
           setDoctorData({
             fullName: response.data.fullName || '',
@@ -285,7 +294,7 @@ const DoctorHome = () => {
             
             <div className="doctor-image-container">
               <img 
-                src="/src/assets/images/doctor.png"
+                src={profilePicUrl || "/src/assets/images/doctor.png"}
                 alt={doctorData.fullName}
                 className="doctor-image"
                 onError={(e) => {
