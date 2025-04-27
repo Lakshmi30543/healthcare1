@@ -1,0 +1,13 @@
+String uploadDir = "C:\\Users\\sreyu\\Desktop\\ALLPROJECT\\Health_Care_Appointment_System\\eCare\\public\\"; // Adjust to your path
+
+                String filePath = uploadDir + uniqueFileName;
+
+                // Save image to the filesystem
+                file.transferTo(new File(filePath));
+
+                // Save relative file path for frontend
+                String relativePath = "public/" + uniqueFileName; // Path relative to frontend project
+
+import java.io.File;
+
+doctor.setProfilePictureUrl(relativePath);

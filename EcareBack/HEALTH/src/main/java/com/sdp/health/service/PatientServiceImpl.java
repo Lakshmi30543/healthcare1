@@ -1,5 +1,7 @@
 package com.sdp.health.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -7,9 +9,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sdp.health.dto.AppointmentBookingDTO;
 import com.sdp.health.model.Appointment;
@@ -110,20 +114,64 @@ public class PatientServiceImpl implements PatientService {
         return patientRepository.findById(id).orElse(null);  // Returns patient if found, otherwise null
     }
     @Override
-    public Patient updatePatient(Long id, Patient patientDetails) {
-        return patientRepository.findById(id)
-                .map(existingPatient -> {
-                    existingPatient.setFullName(patientDetails.getFullName());
-                    existingPatient.setUsername(patientDetails.getUsername());
-                    existingPatient.setPassword(patientDetails.getPassword());
-                    existingPatient.setDob(patientDetails.getDob());
-                    existingPatient.setEmail(patientDetails.getEmail());
-                    existingPatient.setContact(patientDetails.getContact());
-                    existingPatient.setGender(patientDetails.getGender());
-                    existingPatient.setBloodGroup(patientDetails.getBloodGroup());
-                    existingPatient.setAddress(patientDetails.getAddress());
-                    return patientRepository.save(existingPatient);
-                })
-                .orElse(null);
+    public String updatePatient(Long id, Patient patientDetails, MultipartFile file) {
+        Optional<Patient> existingPatient = patientRepository.findById(id);
+
+        if (!existingPatient.isPresent()) {
+            return "Patient not found!";
+        }
+
+        Patient patient = existingPatient.get();
+
+        // 1. Update patient fields (only if present)
+        patient.setFullName(patientDetails.getFullName() != null ? patientDetails.getFullName() : patient.getFullName());
+        patient.setUsername(patientDetails.getUsername() != null ? patientDetails.getUsername() : patient.getUsername());
+        patient.setPassword(patientDetails.getPassword() != null ? patientDetails.getPassword() : patient.getPassword());
+        patient.setDob(patientDetails.getDob() != null ? patientDetails.getDob() : patient.getDob());
+        patient.setEmail(patientDetails.getEmail() != null ? patientDetails.getEmail() : patient.getEmail());
+        patient.setContact(patientDetails.getContact() != null ? patientDetails.getContact() : patient.getContact());
+        patient.setGender(patientDetails.getGender() != null ? patientDetails.getGender() : patient.getGender());
+        patient.setBloodGroup(patientDetails.getBloodGroup() != null ? patientDetails.getBloodGroup() : patient.getBloodGroup());
+        patient.setAddress(patientDetails.getAddress() != null ? patientDetails.getAddress() : patient.getAddress());
+
+        // 2. Upload profile picture with validations
+        if (file != null && !file.isEmpty()) {
+            try {
+                String contentType = file.getContentType();
+                if (contentType == null || !contentType.startsWith("image/")) {
+                    return "Invalid file type. Only image files are allowed.";
+                }
+
+                if (file.getSize() > 5 * 1024 * 1024) {
+                    return "File size too large. Max allowed is 5MB.";
+                }
+
+                String uniqueFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                String uploadDir = "C:\\Users\\Asus\\Desktop\\SDP\\eCare FRONTEND\\public\\profile_pics\\"; // Adjust path
+                String filePath = uploadDir + uniqueFileName;
+
+                file.transferTo(new File(filePath));
+
+                String relativePath = "/profile_pics/" + uniqueFileName;
+                patient.setProfilePictureUrl(relativePath);
+
+            } catch (IOException e) {
+                return "Patient updated but image upload failed: " + e.getMessage();
+            }
+        }
+
+        // 3. Save patient to DB
+        patientRepository.save(patient);
+
+        return "Patient updated successfully!";
     }
+    
+    @Override
+    public String getProfilePictureById(Long id) {
+        Patient patient = patientRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Patient not found with ID: " + id));
+        
+        return patient.getProfilePictureUrl();
+    }
+
 }

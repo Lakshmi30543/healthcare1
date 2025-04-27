@@ -11,8 +11,11 @@ public class Patient extends User {
 
     @Column(name = "address", nullable = false, length = 100)
     private String address;
+    
+    @Column(name = "profilePictureUrl", length = 255, nullable = true)
+    private String profilePictureUrl;
 
-    public String getBloodGroup() {
+	public String getBloodGroup() {
         return bloodGroup;
     }
 
@@ -27,4 +30,13 @@ public class Patient extends User {
     public void setAddress(String address) {
         this.address = address;
     }
+    
+    public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
+	}
+
 }

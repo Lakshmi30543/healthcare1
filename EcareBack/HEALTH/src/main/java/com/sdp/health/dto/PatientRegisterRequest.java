@@ -11,6 +11,7 @@ public class PatientRegisterRequest {
     private String gender;
     private String bloodGroup;
     private String address;
+    private String profilePictureUrl;
 
     public String getFullName() {
         return fullName;
@@ -66,4 +67,10 @@ public class PatientRegisterRequest {
     public void setAddress(String address) {
         this.address = address;
     }
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
+	}
 }
