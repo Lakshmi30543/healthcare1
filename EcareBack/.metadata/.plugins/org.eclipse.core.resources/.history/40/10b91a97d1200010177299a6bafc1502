@@ -1,5 +1,0 @@
-package com.sdp.health.dto;
-
-public class AppointmentBookingDTO {
-
-}

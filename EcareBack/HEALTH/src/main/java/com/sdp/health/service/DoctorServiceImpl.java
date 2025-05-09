@@ -119,7 +119,7 @@ public class DoctorServiceImpl implements DoctorService {
                 String uniqueFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 
                 // Full path where the file will be saved (local directory within the frontend folder)
-                String uploadDir = "C:\\Users\\sreyu\\Desktop\\ALLPROJECT\\Health_Care_Appointment_System\\eCare\\public"; // Adjust to your path
+                String uploadDir = "C:\\Users\\Asus\\Desktop\\SDP\\eCare FRONTEND\\public\\profile_pics\\"; // Adjust to your path
 
                 String filePath = uploadDir + uniqueFileName;
 
@@ -127,7 +127,7 @@ public class DoctorServiceImpl implements DoctorService {
                 file.transferTo(new File(filePath));
 
                 // Save relative file path for frontend
-                String relativePath = "public/" + uniqueFileName; // Path relative to frontend project
+                String relativePath = "/profile_pics/" + uniqueFileName;
                 doctor.setProfilePictureUrl(relativePath);
 
             } catch (IOException e) {
@@ -148,9 +148,7 @@ public class DoctorServiceImpl implements DoctorService {
         
         return doctor.getProfilePictureUrl();
     }
-    
-    
-    
+        
     
     
     //Appointment
@@ -196,7 +194,9 @@ public class DoctorServiceImpl implements DoctorService {
         return appointmentRepository.save(appointment);
     }
 
-
-    
-   
+	@Override
+	public List<Appointment> getAppointmentByDate(String date) {
+	    LocalDate localDate = LocalDate.parse(date); // Format: "YYYY-MM-DD"
+	    return appointmentRepository.findByAppointmentDate(localDate);
+	} 
 }

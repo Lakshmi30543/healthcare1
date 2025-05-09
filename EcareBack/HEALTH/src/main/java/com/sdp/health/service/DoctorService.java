@@ -25,6 +25,6 @@ public interface DoctorService {
     Appointment approveAppointment(Long appointmentId);
     Appointment cancelAppointment(Long appointmentId);
     Appointment rescheduleAppointment(Long appointmentId, AppointmentBookingDTO dto);
-
+    List<Appointment> getAppointmentByDate(String date);
     
 }

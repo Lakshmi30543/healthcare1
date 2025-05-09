@@ -1,0 +1,177 @@
+package com.sdp.health.service;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.sdp.health.dto.AppointmentBookingDTO;
+import com.sdp.health.model.Appointment;
+import com.sdp.health.model.Doctor;
+import com.sdp.health.model.Patient;
+import com.sdp.health.repository.AppointmentRepository;
+import com.sdp.health.repository.DoctorRepository;
+import com.sdp.health.repository.PatientRepository;
+
+
+
+@Service
+public class PatientServiceImpl implements PatientService {
+
+    @Autowired
+    private PatientRepository patientRepository;
+    
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+    
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    // Get all patients from the database
+    @Override
+    public List<Patient> getAllPatients() {
+        return patientRepository.findAll();
+    }
+
+    // Delete a patient by ID
+    @Override
+    public void deletePatient(Long id) {
+        patientRepository.deleteById(id);
+    }
+    
+//    @Autowired
+//    private AppointmentRepository appointmentRepository;
+
+    @Override
+    public long countTotalPatients() {
+        return patientRepository.count();
+    }
+
+//    @Override
+//    public long countAppointmentsThisWeek() {
+//        LocalDate today = LocalDate.now();
+//        LocalDate startOfWeek = today.minusDays(today.getDayOfWeek().getValue() - 1); // Monday
+//        LocalDate endOfWeek = startOfWeek.plusDays(6); // Sunday
+//
+//        return appointmentRepository.countByAppointmentDateBetween(startOfWeek, endOfWeek);
+//    }
+//    long countByAppointmentDateBetween(LocalDate start, LocalDate end);
+    
+
+    @Override
+    public Appointment bookAppointment(AppointmentBookingDTO dto) {
+        // Fetch Patient by ID
+        Patient patient = patientRepository.findById(dto.getPatientId())
+                .orElseThrow(() -> new RuntimeException("Patient not found with ID: " + dto.getPatientId()));
+
+        // Fetch Doctor by ID
+        Doctor doctor = doctorRepository.findById(dto.getDoctorId())
+                .orElseThrow(() -> new RuntimeException("Doctor not found with ID: " + dto.getDoctorId()));
+
+        // Parse the time using DateTimeFormatter (12-hour format with AM/PM)
+        String timeString = dto.getTime().trim();
+        LocalTime appointmentTime;
+        try {
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a", Locale.US);
+            appointmentTime = LocalTime.parse(timeString, timeFormatter);
+        } catch (DateTimeParseException e) {
+            throw new RuntimeException("Invalid time format. Please provide the time in 'h:mm AM/PM' format.", e);
+        }
+
+        // Create and populate the Appointment entity
+        Appointment appointment = new Appointment();
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+        appointment.setAppointmentDate(LocalDate.parse(dto.getDate()));
+        appointment.setAppointmentTime(appointmentTime);
+        appointment.setBookedAt(LocalDateTime.now());
+        appointment.setStatus("PENDING");
+        appointment.setPaymentStatus("PAID");
+        appointment.setPurpose(dto.getPurpose());
+
+        // Save and return the appointment
+        return appointmentRepository.save(appointment);
+    }
+    
+
+    @Override
+    public List<Appointment> getAppointmentsByPatientId(Long patientId) {
+        return appointmentRepository.findByPatientId(patientId);
+    }
+    
+    @Override
+    public Patient getPatientById(Long id) {
+        return patientRepository.findById(id).orElse(null);  // Returns patient if found, otherwise null
+    }
+    @Override
+    public String updatePatient(Long id, Patient patientDetails, MultipartFile file) {
+        Optional<Patient> existingPatient = patientRepository.findById(id);
+
+        if (!existingPatient.isPresent()) {
+            return "Patient not found!";
+        }
+
+        Patient patient = existingPatient.get();
+
+        // 1. Update patient fields (only if present)
+        patient.setFullName(patientDetails.getFullName() != null ? patientDetails.getFullName() : patient.getFullName());
+        patient.setUsername(patientDetails.getUsername() != null ? patientDetails.getUsername() : patient.getUsername());
+        patient.setPassword(patientDetails.getPassword() != null ? patientDetails.getPassword() : patient.getPassword());
+        patient.setDob(patientDetails.getDob() != null ? patientDetails.getDob() : patient.getDob());
+        patient.setEmail(patientDetails.getEmail() != null ? patientDetails.getEmail() : patient.getEmail());
+        patient.setContact(patientDetails.getContact() != null ? patientDetails.getContact() : patient.getContact());
+        patient.setGender(patientDetails.getGender() != null ? patientDetails.getGender() : patient.getGender());
+        patient.setBloodGroup(patientDetails.getBloodGroup() != null ? patientDetails.getBloodGroup() : patient.getBloodGroup());
+        patient.setAddress(patientDetails.getAddress() != null ? patientDetails.getAddress() : patient.getAddress());
+
+        // 2. Upload profile picture with validations
+        if (file != null && !file.isEmpty()) {
+            try {
+                String contentType = file.getContentType();
+                if (contentType == null || !contentType.startsWith("image/")) {
+                    return "Invalid file type. Only image files are allowed.";
+                }
+
+                if (file.getSize() > 5 * 1024 * 1024) {
+                    return "File size too large. Max allowed is 5MB.";
+                }
+
+                String uniqueFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                String uploadDir = C:\Users\sreyu\Desktop\ALLPROJECT\Health_Care_Appointment_System\eCare\public; // Adjust path
+                String filePath = uploadDir + uniqueFileName;
+
+                file.transferTo(new File(filePath));
+
+                String relativePath = "/profile_pics/" + uniqueFileName;
+                patient.setProfilePictureUrl(relativePath);
+
+            } catch (IOException e) {
+                return "Patient updated but image upload failed: " + e.getMessage();
+            }
+        }
+
+        // 3. Save patient to DB
+        patientRepository.save(patient);
+
+        return "Patient updated successfully!";
+    }
+    
+    @Override
+    public String getProfilePictureById(Long id) {
+        Patient patient = patientRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Patient not found with ID: " + id));
+        
+        return patient.getProfilePictureUrl();
+    }
+
+}

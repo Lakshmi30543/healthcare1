@@ -7,6 +7,7 @@
   min-height: calc(100vh - 80px);
   transition: all 0.3s ease;
   overflow-x: hidden;
+  height: 645px;
 }
 
 .air-patients-header {

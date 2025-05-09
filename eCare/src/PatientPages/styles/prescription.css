@@ -1,0 +1,80 @@
+.prescription-fab-container {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .prescription-fab {
+    background: #29cabb;
+    border: none;
+    border-radius: 50px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: width 0.3s, background 0.3s;
+    overflow: hidden;
+    padding: 0 20px 0 16px;
+    position: relative;
+  }
+  
+  .prescription-fab.expanded {
+    width: 260px;
+    background: #22b0a3;
+  }
+  
+  .prescription-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .prescription-label {
+    color: black;
+    font-size: 1rem;
+    margin-left: 16px;
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  
+  .prescription-label.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .prescription-generator-box {
+    margin-bottom: 12px;
+    margin-right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    padding: 24px;
+    min-width: 280px;
+    min-height: 180px;
+    transition: opacity 0.2s;
+    opacity: 1;
+  }
+  
+  .prescription-generator-box h3 {
+    color: #29cabb;
+    margin-bottom: 12px;
+  }
+  
+  .prescription-generate-btn {
+    background: #29cabb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    margin-top: 8px;
+    cursor: pointer;
+  }

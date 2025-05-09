@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
+} 
 
 // Custom hook to access the context
 export const useAuth = () => useContext(AuthContext);

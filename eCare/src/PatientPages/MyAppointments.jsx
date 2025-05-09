@@ -35,16 +35,29 @@ export default function MyAppointments() {
       {loading ? (
         <p>Loading...</p>
       ) : appointments.length > 0 ? (
-        <div className="appointments-list">
-          {appointments.map((appointment) => (
-            <div key={appointment.id} className="appointment-item">
-              <h3>Dr. {appointment.doctor?.fullName}</h3>
-              <p><strong>Date:</strong> {appointment.appointmentDate}</p>
-              <p><strong>Time:</strong> {appointment.appointmentTime}</p>
-              <p><strong>Status:</strong> {appointment.status}</p>
-              <p><strong>Payment Status:</strong> {appointment.paymentStatus}</p>
-            </div>
-          ))}
+        <div className="appointments-table-wrapper">
+          <table className="appointments-table">
+            <thead>
+              <tr>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Payment Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {appointments.map((appointment) => (
+                <tr key={appointment.id}>
+                  <td>Dr. {appointment.doctor?.fullName}</td>
+                  <td>{appointment.appointmentDate}</td>
+                  <td>{appointment.appointmentTime}</td>
+                  <td>{appointment.status}</td>
+                  <td>{appointment.paymentStatus}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <div className="no-appointments">

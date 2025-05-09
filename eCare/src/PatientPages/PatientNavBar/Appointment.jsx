@@ -1,5 +1,5 @@
 // src/pages/Appointment.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaHospital, FaVideo } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,7 +9,23 @@ import "../styles/appointment.css";
 export default function Appointment() {
   const location = useLocation();
   const navigate = useNavigate();
-  const doctor = location.state?.doctor; // Get doctor details from the passed state
+  const doctor = location.state?.doctor;
+
+  // Ensure doctor.prize is always a valid number (default to 500 if missing/invalid)
+  const doctorPrize = doctor && !isNaN(Number(doctor.prize)) && Number(doctor.prize) > 0
+    ? Number(doctor.prize)
+    : 500;
+
+  useEffect(() => {
+    if (!doctor) {
+      // If doctor data is missing, redirect back to Consultation
+      navigate('/patient/consultation', { replace: true });
+    }
+  }, [doctor, navigate]);
+
+  if (!doctor) {
+    return <div>Redirecting...</div>;
+  }
 
   const [appointmentType, setAppointmentType] = useState("physical");
   const [selectedDate, setSelectedDate] = useState("");
@@ -33,11 +49,21 @@ export default function Appointment() {
       return;
     }
 
+    // Debug: Log doctor object and prize
+    console.log("Doctor object:", doctor);
+    console.log("Doctor prize:", doctorPrize);
+
     try {
       // Step 1: Create Razorpay order
       const paymentRes = await axios.post(`${config.url}/eCare/payment/createOrder`, {
-        amount: doctor.prize,
+        amount: doctorPrize,
       });
+
+      if (!paymentRes.data || !paymentRes.data.id) {
+        console.error("Payment API response invalid:", paymentRes.data);
+        alert("Payment service is currently unavailable. Please try again later.");
+        return;
+      }
 
       const { id, amount, currency } = paymentRes.data;
 
@@ -110,7 +136,7 @@ export default function Appointment() {
         <div className="doctor-summary">
           <h3>Consulting: Dr. {doctor.fullName}</h3>
           <p><strong>Specialization:</strong> {doctor.specialization}</p>
-          <p><strong>Fee:</strong> ₹{doctor.prize}</p>
+          <p><strong>Fee:</strong> ₹{doctorPrize}</p>
         </div>
       )}
        

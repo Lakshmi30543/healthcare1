@@ -88,8 +88,7 @@ export default function Consultation() {
       <div className="doctor-container">
         {filteredDoctors.map((doctor) => (
           <div key={doctor.id} className="doctor-card">
-            <div className="doctor-info">
-              {/* Doctor Image */}
+            <div className="doctor-card-content">
               <img
                 src={doctorImages[doctor.id] || "/src/assets/images/doctor.png"}
                 alt={doctor.fullName}
@@ -98,18 +97,21 @@ export default function Consultation() {
                   e.target.onerror = null;
                   e.target.src = "/src/assets/images/doctor.png";
                 }}
-                style={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", marginBottom: 10 }}
               />
-              <h3>{doctor.fullName}</h3>
-              <p><strong>Specialization:</strong> {doctor.specialization}</p>
-              <p><strong>Experience:</strong> {doctor.experienceYears} years</p>
-              <p><strong>Qualification:</strong> {doctor.qualification}</p>
-              <p><strong>Medical License:</strong> {doctor.medicalLicenseNumber}</p>
-              <p><strong>Bio:</strong> {doctor.bio}</p>
-              <p><strong>Consultation Fee:</strong> ₹{doctor.prize}</p>
-              <p><strong>Address:</strong> {doctor.address}</p>
-              <button onClick={() => handleAppointmentClick(doctor)}>Book Appointment</button>
+              <div className="doctor-main-info">
+                <div className="doctor-name">{doctor.fullName}</div>
+                <div className="doctor-speciality">{doctor.specialization}</div>
+                
+              </div>
             </div>
+            <div className="doctor-extra-info">
+            <div className="doctor-info">Experience: {doctor.experienceYears} years</div>
+              <div className="doctor-info">Qualification: {doctor.qualification}</div>
+              <div className="doctor-info">Medical License: {doctor.medicalLicenseNumber}</div>
+              <div className="doctor-info">Bio: {doctor.bio}</div>
+              <div className="doctor-info">Consultation Fee: ₹{doctor.prize}</div> 
+            </div>
+            <button onClick={() => handleAppointmentClick(doctor)}>Book Appointment</button>
           </div>
         ))}
       </div>

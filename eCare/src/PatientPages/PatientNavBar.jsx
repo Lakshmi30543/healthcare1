@@ -77,7 +77,9 @@ function PatientNavbar() {
           <Route path="/patient/bloodservice" element={<BloodService />} />
           <Route path="/patient/applyblood" element={<ApplyBlood />} />
           <Route path="/patient/myappointments" element={<MyAppointments/>}/>
+          <Route path="/patient/myappointments" element={<MyAppointments/>}/>
           <Route path="/patient/profile" element={<PatientProfile/>}/>
+          
         </Routes>
       </div>
     </>

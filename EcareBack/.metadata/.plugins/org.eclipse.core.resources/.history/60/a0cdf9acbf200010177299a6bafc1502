@@ -1,6 +1,0 @@
-package com.sdp.health.service;
-
-public interface RazorpayService {
-    String createOrder(double amount, String currency) throws RazorpayException;
-}
-

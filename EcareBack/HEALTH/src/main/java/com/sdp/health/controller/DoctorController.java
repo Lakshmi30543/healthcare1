@@ -100,6 +100,15 @@ public class DoctorController {
         return ResponseEntity.ok(doctorService.rescheduleAppointment(id, dto));
     }
     
-    
+    @GetMapping("/appointments/bydate/{date}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByDate(@PathVariable String date) {
+        try {
+            List<Appointment> appointments = doctorService.getAppointmentByDate(date);
+            return ResponseEntity.ok(appointments);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     
 }
