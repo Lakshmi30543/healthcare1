@@ -209,9 +209,13 @@ const Schedule = () => {
                       </div>
                     </div>
                     <div className="musk-appointment-actions">
-                      <button className="musk-join-btn">
+                      <button
+                        className="musk-join-btn"
+                        onClick={() => window.open(`https://meet.jit.si/eCareRoom-${apt.id}`, '_blank')}
+                      >
                         Join
                       </button>
+
                     </div>
                   </div>
                 ))
