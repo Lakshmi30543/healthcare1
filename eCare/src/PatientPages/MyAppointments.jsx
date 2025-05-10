@@ -44,6 +44,7 @@ export default function MyAppointments() {
                 <th>Time</th>
                 <th>Status</th>
                 <th>Payment Status</th>
+                <th>Action</th> {/* New column for Join Now button */}
               </tr>
             </thead>
             <tbody>
@@ -54,6 +55,29 @@ export default function MyAppointments() {
                   <td>{appointment.appointmentTime}</td>
                   <td>{appointment.status}</td>
                   <td>{appointment.paymentStatus}</td>
+                  <td>
+                    <button
+                      style={{
+                        background: "#39cabb",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        padding: "6px 16px",
+                        fontSize: "0.98rem",
+                        cursor: appointment.status === "APPROVED" ? "pointer" : "not-allowed",
+                        opacity: appointment.status === "APPROVED" ? 1 : 0.6,
+                        transition: "background 0.2s"
+                      }}
+                      disabled={appointment.status !== "APPROVED"}
+                      onClick={() => {
+                        if (appointment.status === "APPROVED") {
+                          window.open(`https://meet.jit.si/eCareRoom-${appointment.id}`, '_blank');
+                        }
+                      }}
+                    >
+                      Join Now
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

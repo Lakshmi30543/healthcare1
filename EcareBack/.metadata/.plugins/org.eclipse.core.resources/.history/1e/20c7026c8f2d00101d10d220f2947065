@@ -1,0 +1,25 @@
+package com.sdp.health.model;
+
+
+@Entity
+@Table(name = "prescriptions")
+public class Prescription {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String diagnosis;
+
+    @Lob
+    private String medication;
+
+    @Lob
+    private String notes;
+
+    @OneToOne
+    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
+    private Appointment appointment;
+
+    // getters and setters
+}

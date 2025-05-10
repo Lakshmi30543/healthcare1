@@ -111,8 +111,81 @@
 
 .musk-appointment-card-content {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: column; /* Stack Join above consultation row */
+  align-items: flex-start;
+  width: 100%;
+  gap: 0;
+}
+
+.musk-join-btn {
+  background-color: #39cabb;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: -80px; /* Less space below Join button */
+  margin-top: -80px;    /* Add a little space above if needed */
+  align-self: flex-start; /* Align to left */
+  margin-left: 300px;
+}
+.musk-join-btn:hover {
+  background-color: #2ea99b;
+}
+
+.musk-consultation-row {
+  display: flex;
+  flex-direction: row; /* Status and prescription in a row */
+  align-items: center;
+  gap: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.musk-appointment-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.musk-consultation-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+.musk-consultation-label {
+  font-weight: 500;
+}
+
+.musk-consultation-select {
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.musk-report-btn {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: background 0.2s;
+  margin-top: -3px;
+}
+
+.musk-report-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 .musk-appointment-patient {
@@ -122,13 +195,39 @@
   margin-bottom: 4px;
 }
 
+.musk-appointment-patient {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+.musk-join-btn {
+  background-color: #39cabb;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-left: 180px; /* Space between name and button */
+  align-self: center;
+  height: 40px;
+  width: 70px;
+}
+.musk-join-btn:hover {
+  background-color: #2ea99b;
+}
+
 .musk-patient-avatar {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #39cabb;
   background: #e0f7f4;
+  margin-top: 10px;
 }
 
 .musk-patient-icon {
@@ -157,56 +256,6 @@
   display: flex;
   align-items: center;
   gap: 5px;
-}
-
-.musk-appointment-actions {
-  display: flex;
-  align-items: center;
-  margin-top: 0;
-  margin-left: 18px;
-  height: 100%;
-}
-
-.musk-join-btn {
-  background-color: #39cabb;
-  color: #fff;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.musk-join-btn:hover {
-  background-color: #2ea99b;
-}
-
-.musk-appointment-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.musk-status-badge {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.musk-status-badge.pending {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.musk-status-badge.confirmed {
-  background: #d4edda;
-  color: #155724;
-}
-
-.musk-status-badge.cancelled {
-  background: #f8d7da;
-  color: #721c24;
 }
 
 .musk-appointment-actions {
@@ -247,19 +296,4 @@
 
 .rbc-today {
   background-color: rgba(41, 202, 187, 0.1) !important;
-}
-
-
-.musk-join-btn {
-  background-color: #39cabb;
-  color: #fff;
-  border: none;
-  padding: 10px 22px;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.musk-join-btn:hover {
-  background-color: #2ea99b;
 }

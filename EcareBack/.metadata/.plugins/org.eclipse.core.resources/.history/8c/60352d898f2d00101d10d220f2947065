@@ -1,0 +1,6 @@
+package com.sdp.health.repository;
+
+@Repository
+public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
+    Optional<Prescription> findByAppointmentId(Long appointmentId);
+}

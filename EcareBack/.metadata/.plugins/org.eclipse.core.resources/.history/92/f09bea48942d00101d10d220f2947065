@@ -1,0 +1,46 @@
+package com.sdp.health.service;
+
+public class 
+@Service
+public class EmailServiceImpl implements EmailService {
+
+    private final JavaMailSender mailSender;
+
+    @Autowired
+    public EmailServiceImpl(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+    @Override
+    public void sendPrescriptionEmail(Patient patient, Doctor doctor, Prescription prescription) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(patient.getEmail());
+        message.setSubject("Your Prescription from " + doctor.getName());
+        
+        String emailContent = String.format(
+            "Dear %s,\n\n" +
+            "Here is your prescription from Dr. %s:\n\n" +
+            "%s\n\n" +
+            "Appointment Details:\n" +
+            "Date: %s\n" +
+            "Time: %s\n\n" +
+            "Doctor Contact Information:\n" +
+            "Name: Dr. %s\n" +
+            "Specialization: %s\n" +
+            "Phone: %s\n\n" +
+            "Thank you,\n" +
+            "eCare Team",
+            patient.getFullName(),
+            doctor.getName(),
+            prescription.getPrescriptionText(),
+            prescription.getAppointment().getAppointmentDate(),
+            prescription.getAppointment().getAppointmentTime(),
+            doctor.getName(),
+            doctor.getSpecialization(),
+            doctor.getPhone()
+        );
+        
+        message.setText(emailContent);
+        mailSender.send(message);
+    }
+}

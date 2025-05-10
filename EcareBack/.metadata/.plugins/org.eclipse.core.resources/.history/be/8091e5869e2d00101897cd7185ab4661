@@ -1,0 +1,68 @@
+package com.sdp.health.service;
+
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sdp.health.dto.PrescriptionDTO;
+import com.sdp.health.model.Appointment;
+import com.sdp.health.model.Prescription;
+import com.sdp.health.repository.AppointmentRepository;
+import com.sdp.health.repository.PrescriptionRepository;
+
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+public class PrescriptionServiceImpl implements PrescriptionService {
+
+    private final PrescriptionRepository prescriptionRepository;
+    private final AppointmentRepository appointmentRepository;
+    private final EmailService emailService;
+
+    @Autowired
+    public PrescriptionServiceImpl(PrescriptionRepository prescriptionRepository,
+                                 AppointmentRepository appointmentRepository,
+                                 EmailService emailService) {
+        this.prescriptionRepository = prescriptionRepository;
+        this.appointmentRepository = appointmentRepository;
+        this.emailService = emailService;
+    }
+
+    @Override
+    public Prescription createPrescription(PrescriptionDTO prescriptionDTO) {
+        Appointment appointment = appointmentRepository.findById(prescriptionDTO.getAppointmentId())
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        // Check if prescription already exists for this appointment
+        if (prescriptionRepository.existsByAppointmentId(appointment.getId())) {
+            throw new RuntimeException("Prescription already exists for this appointment");
+        }
+
+        Prescription prescription = new Prescription();
+        prescription.setAppointment(appointment);
+        prescription.setDoctor(appointment.getDoctor());
+        prescription.setPatient(appointment.getPatient());
+        prescription.setPrescriptionText(prescriptionDTO.getPrescriptionText());
+
+        Prescription savedPrescription = prescriptionRepository.save(prescription);
+        
+        // Send email notification
+        emailService.sendPrescriptionEmail(appointment.getPatient(), appointment.getDoctor(), savedPrescription);
+        
+        return savedPrescription;
+    }
+
+    @Override
+    public List<Prescription> getPrescriptionsByPatient(Long patientId) {
+        return prescriptionRepository.findByPatientId(patientId);
+    }
+
+    @Override
+    public List<Prescription> getPrescriptionsByAppointment(Long appointmentId) {
+        return prescriptionRepository.findByAppointmentId(appointmentId);
+    }
+}

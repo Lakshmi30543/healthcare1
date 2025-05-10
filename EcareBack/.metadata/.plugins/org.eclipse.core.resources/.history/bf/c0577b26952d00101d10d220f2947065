@@ -1,0 +1,59 @@
+package com.sdp.health.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sdp.health.dto.PrescriptionDTO;
+import com.sdp.health.model.Prescription;
+import com.sdp.health.service.PrescriptionService;
+
+@RestController
+@RequestMapping("/ecare/prescriptions")
+public class PrescriptionController {
+
+    private final PrescriptionService prescriptionService;
+
+    @Autowired
+    public PrescriptionController(PrescriptionService prescriptionService) {
+        this.prescriptionService = prescriptionService;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createPrescription(@RequestBody PrescriptionDTO prescriptionDTO) {
+        try {
+            Prescription prescription = prescriptionService.createPrescription(prescriptionDTO);
+            return ResponseEntity.ok(prescription);
+        } catch (PrescriptionException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<?> getPatientPrescriptions(@PathVariable Long patientId) {
+        try {
+            List<Prescription> prescriptions = prescriptionService.getPrescriptionsByPatient(patientId);
+            return ResponseEntity.ok(prescriptions);
+        } catch (PrescriptionException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/appointment/{appointmentId}")
+    public ResponseEntity<?> getAppointmentPrescriptions(@PathVariable Long appointmentId) {
+        try {
+            List<Prescription> prescriptions = prescriptionService.getPrescriptionsByAppointment(appointmentId);
+            return ResponseEntity.ok(prescriptions);
+        } catch (PrescriptionException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+}

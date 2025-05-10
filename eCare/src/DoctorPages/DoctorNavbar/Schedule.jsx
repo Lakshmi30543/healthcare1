@@ -1,15 +1,111 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import '../styles/dschedule.css';
+import { FaCalendarAlt, FaClock, FaFilter, FaUser } from 'react-icons/fa';
+import { Modal, Button, Form } from 'react-bootstrap';
 import config from '../../config';
-import { FaCalendarAlt, FaClock, FaUser, FaCheckCircle, FaTimesCircle, FaFilter } from 'react-icons/fa';
-import { Activity, Clock, Users } from 'lucide-react';
+import '../styles/dschedule.css';
 
 const localizer = momentLocalizer(moment);
 
+const PrescriptionModal = ({ show, handleClose, appointment }) => {
+  const [prescriptionText, setPrescriptionText] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [debugInfo, setDebugInfo] = useState(null);
+
+  // Log appointment data when component mounts
+  useEffect(() => {
+    if (appointment) {
+      console.log('Appointment data:', appointment);
+      console.log('Patient data:', appointment.patient);
+      
+      // Store debug info
+      setDebugInfo({
+        appointmentId: appointment.id,
+        doctorId: sessionStorage.getItem('userId'),
+        patientId: appointment.patient?.id,
+        patientFromAppointment: !!appointment.patient,
+      });
+    }
+  }, [appointment]);
+
+  const handleSubmit = async () => {
+    try {
+      setIsSending(true);
+      
+      // Get the logged in doctor's ID
+      const doctorId = sessionStorage.getItem('userId');
+      
+      // Ensure IDs are parsed as numbers (Long in Java)
+      const payload = {
+        appointmentId: parseInt(appointment.id, 10),
+        doctorId: parseInt(doctorId, 10),
+        patientId: parseInt(appointment.patient?.id || appointment.patientId, 10),
+        prescriptionText
+      };
+      
+      // Log complete request data
+      console.log('Sending prescription request:', payload);
+      
+      // Make the API call
+      const response = await axios.post(`${config.url}/ecare/prescriptions/create`, payload);
+      
+      console.log('Prescription response:', response.data);
+      handleClose();
+      alert('Prescription saved and sent to patient successfully!');
+    } catch (error) {
+      console.error('Error saving prescription:', error);
+      
+      // Enhanced error logging
+      if (error.response) {
+        console.error('Error response status:', error.response.status);
+        console.error('Error response data:', error.response.data);
+      }
+      
+      alert(`Failed to save prescription: ${error.response?.data || error.message}`);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  return (
+    <Modal show={show} onHide={handleClose} size="lg">
+      <Modal.Header closeButton>
+        <Modal.Title>Create Prescription</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form.Group>
+          <Form.Label>Prescription for {appointment.patient?.fullName || appointment.patientName}</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={10}
+            value={prescriptionText}
+            onChange={(e) => setPrescriptionText(e.target.value)}
+            placeholder="Enter prescription details..."
+          />
+        </Form.Group>
+        
+        {/* Debug information section (only visible in development) */}
+        {process.env.NODE_ENV === 'development' && debugInfo && (
+          <div style={{ marginTop: '20px', padding: '10px', background: '#f8f9fa', borderRadius: '5px' }}>
+            <h6>Debug Information:</h6>
+            <pre style={{ fontSize: '12px' }}>{JSON.stringify(debugInfo, null, 2)}</pre>
+          </div>
+        )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button variant="primary" onClick={handleSubmit} disabled={isSending || !prescriptionText.trim()}>
+          {isSending ? 'Sending...' : 'Save & Send'}
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 const Schedule = () => {
   const [appointments, setAppointments] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -21,12 +117,14 @@ const Schedule = () => {
     confirmed: 0,
     cancelled: 0
   });
+  const [dayAppointments, setDayAppointments] = useState([]);
+  const [showPrescriptionModal, setShowPrescriptionModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   useEffect(() => {
     fetchAppointmentsForMonth();
   }, []);
 
-  // Fetch all appointments for the calendar (month view)
   const fetchAppointmentsForMonth = async () => {
     try {
       setIsLoading(true);
@@ -43,7 +141,8 @@ const Schedule = () => {
           patientName: apt.patientName,
           status: apt.status || 'PENDING',
           time: apt.appointmentTime,
-          reason: apt.reason
+          reason: apt.reason,
+          patient: apt.patient
         };
       });
       setAppointments(formattedAppointments);
@@ -60,8 +159,6 @@ const Schedule = () => {
     }
   };
 
-  // Fetch appointments for a specific date for the right panel
-  const [dayAppointments, setDayAppointments] = useState([]);
   const fetchAppointmentsByDate = async (date) => {
     try {
       setIsLoading(true);
@@ -69,7 +166,7 @@ const Schedule = () => {
       const formattedDate = moment(date).format('YYYY-MM-DD');
       const response = await axios.get(`${config.url}/eCare/doctor/appointments/bydate/${formattedDate}?doctorId=${doctorId}`);
       const formattedDayAppointments = response.data.map(apt => ({
-        ...apt, // <-- keep all properties, including patient
+        ...apt,
         title: `${apt.patient?.fullName || ''} (${apt.appointmentTime}) - ${apt.status}`,
         start: moment(`${apt.appointmentDate} ${apt.appointmentTime}`, "YYYY-MM-DD HH:mm:ss").toDate(),
         end: moment(`${apt.appointmentDate} ${apt.appointmentTime}`, "YYYY-MM-DD HH:mm:ss").add(30, 'minutes').toDate(),
@@ -83,17 +180,16 @@ const Schedule = () => {
     }
   };
 
-  // When a day is selected, fetch appointments for that day
   const handleSelectSlot = (slotInfo) => {
     setSelectedDate(slotInfo.start);
     fetchAppointmentsByDate(slotInfo.start);
   };
+
   const handleSelectEvent = (event) => {
     setSelectedDate(event.start);
     fetchAppointmentsByDate(event.start);
   };
 
-  // Filter day appointments by status
   const getDayAppointments = () => {
     if (filter === 'ALL') return dayAppointments;
     return dayAppointments.filter(apt => apt.status === filter);
@@ -104,10 +200,15 @@ const Schedule = () => {
       await axios.put(`${config.url}/eCare/appointments/${appointmentId}/status`, {
         status: newStatus
       });
-      await fetchAppointments();
+      await fetchAppointmentsForMonth();
     } catch (error) {
       console.error('Error updating appointment status:', error);
     }
+  };
+
+  const handlePrescriptionClick = (apt) => {
+    setSelectedAppointment(apt);
+    setShowPrescriptionModal(true);
   };
 
   const eventStyleGetter = (event) => {
@@ -141,9 +242,9 @@ const Schedule = () => {
   return (
     <div className="musk-schedule-container">
       <div className="musk-schedule-content">
-      <div className="musk-header-title">
-            <h2> Schedule Dashboard</h2>
-          </div>
+        <div className="musk-header-title">
+          <h2>Schedule Dashboard</h2>
+        </div>
         <div className="musk-schedule-header">
           <p className="musk-current-date">{moment().format('dddd, MMMM D, YYYY')}</p>
         </div>
@@ -183,39 +284,64 @@ const Schedule = () => {
             
             <div className="musk-appointments-list">
               {getDayAppointments().length > 0 ? (
-                getDayAppointments().map(apt => (
+                getDayAppointments().map((apt, idx) => (
                   <div key={apt.id} className="musk-appointment-card">
                     <div className="musk-appointment-card-content">
-                      <div className="musk-appointment-patient">
-                        {apt.patient?.profilePictureUrl && (
-                          <img
-                            src={apt.patient.profilePictureUrl}
-                            alt={apt.patient?.fullName || "Profile"}
-                            className="musk-patient-avatar"
-                          />
-                        )}
-                        <FaUser className="musk-patient-icon" />
-                        <span className="musk-patient-name">
-                          {apt.patient?.fullName || apt.patientName}
-                        </span>
+                      <div className="musk-appointment-info">
+                        <div className="musk-appointment-patient">
+                          {apt.patient?.profilePictureUrl && (
+                            <img
+                              src={apt.patient.profilePictureUrl}
+                              alt={apt.patient?.fullName || "Profile"}
+                              className="musk-patient-avatar"
+                            />
+                          )}
+                          <FaUser className="musk-patient-icon" />
+                          <span className="musk-patient-name">
+                            {apt.patient?.fullName || apt.patientName}
+                          </span>
+                          <button
+                            className="musk-join-btn"
+                            onClick={() => window.open(`https://meet.jit.si/eCareRoom-${apt.id}`, '_blank')}
+                          >
+                            Join
+                          </button>
+                        </div>
+                        <div className="musk-appointment-datetime">
+                          <span className="musk-appointment-date">
+                            <FaCalendarAlt /> {apt.appointmentDate || moment(apt.start).format('YYYY-MM-DD')}
+                          </span>
+                          <span className="musk-appointment-time">
+                            <FaClock /> {apt.appointmentTime || apt.time}
+                          </span>
+                        </div>
                       </div>
-                      <div className="musk-appointment-datetime">
-                        <span className="musk-appointment-date">
-                          <FaCalendarAlt /> {apt.appointmentDate || moment(apt.start).format('YYYY-MM-DD')}
-                        </span>
-                        <span className="musk-appointment-time">
-                          <FaClock /> {apt.appointmentTime || apt.time}
-                        </span>
+                      <div className="musk-consultation-row">
+                        <label htmlFor={`status-${apt.id}`} className="musk-consultation-label">Consultation Status:</label>
+                        <select
+                          id={`status-${apt.id}`}
+                          className="musk-consultation-select"
+                          value={apt.consultationStatus || 'NOT_COMPLETED'}
+                          onChange={(e) => {
+                            const updatedStatus = e.target.value;
+                            setDayAppointments(prev =>
+                              prev.map(item =>
+                                item.id === apt.id ? { ...item, consultationStatus: updatedStatus } : item
+                              )
+                            );
+                          }}
+                        >
+                          <option value="NOT_COMPLETED">Not Completed</option>
+                          <option value="COMPLETED">Completed</option>
+                        </select>
+                        <button
+                          className="musk-report-btn"
+                          disabled={apt.consultationStatus !== 'COMPLETED'}
+                          onClick={() => handlePrescriptionClick(apt)}
+                        >
+                          Prescription
+                        </button>
                       </div>
-                    </div>
-                    <div className="musk-appointment-actions">
-                      <button
-                        className="musk-join-btn"
-                        onClick={() => window.open(`https://meet.jit.si/eCareRoom-${apt.id}`, '_blank')}
-                      >
-                        Join
-                      </button>
-
                     </div>
                   </div>
                 ))
@@ -228,6 +354,14 @@ const Schedule = () => {
           </div>
         </div>
       </div>
+
+      {showPrescriptionModal && selectedAppointment && (
+        <PrescriptionModal
+          show={showPrescriptionModal}
+          handleClose={() => setShowPrescriptionModal(false)}
+          appointment={selectedAppointment}
+        />
+      )}
     </div>
   );
 };

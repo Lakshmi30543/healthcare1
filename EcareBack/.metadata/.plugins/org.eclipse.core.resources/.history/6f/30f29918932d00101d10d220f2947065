@@ -1,0 +1,8 @@
+package com.sdp.health.dto;
+
+public class PrescriptionDTO {
+    private Long appointmentId;
+    private String prescriptionText;
+    
+    // Getters and setters
+}

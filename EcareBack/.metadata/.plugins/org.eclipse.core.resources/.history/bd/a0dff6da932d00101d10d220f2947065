@@ -1,0 +1,9 @@
+package com.sdp.health.service;
+
+import com.sdp.health.model.Prescription;
+
+public interface PrescriptionService {
+    Prescription createPrescription(PrescriptionDTO prescriptionDTO);
+    List<Prescription> getPrescriptionsByPatient(Long patientId);
+    List<Prescription> getPrescriptionsByAppointment(Long appointmentId);
+}

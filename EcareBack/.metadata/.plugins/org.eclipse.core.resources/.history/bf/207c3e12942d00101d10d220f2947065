@@ -1,0 +1,44 @@
+package com.sdp.controllers;
+
+import com.ecare.dto.PrescriptionDTO;
+import com.ecare.models.Prescription;
+import com.ecare.services.PrescriptionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/prescriptions")
+public class PrescriptionController {
+
+    private final PrescriptionService prescriptionService;
+
+    @Autowired
+    public PrescriptionController(PrescriptionService prescriptionService) {
+        this.prescriptionService = prescriptionService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Prescription> createPrescription(@RequestBody PrescriptionDTO prescriptionDTO) {
+        try {
+            Prescription prescription = prescriptionService.createPrescription(prescriptionDTO);
+            return ResponseEntity.ok(prescription);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<Prescription>> getPatientPrescriptions(@PathVariable Long patientId) {
+        List<Prescription> prescriptions = prescriptionService.getPrescriptionsByPatient(patientId);
+        return ResponseEntity.ok(prescriptions);
+    }
+
+    @GetMapping("/appointment/{appointmentId}")
+    public ResponseEntity<List<Prescription>> getAppointmentPrescriptions(@PathVariable Long appointmentId) {
+        List<Prescription> prescriptions = prescriptionService.getPrescriptionsByAppointment(appointmentId);
+        return ResponseEntity.ok(prescriptions);
+    }
+}

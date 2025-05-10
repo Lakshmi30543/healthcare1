@@ -1,0 +1,19 @@
+package com.sdp.health.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.sdp.health.model.Prescription;
+
+@Repository
+public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
+    List<Prescription> findByPatientId(Long patientId);
+    List<Prescription> findByAppointmentId(Long appointmentId);
+    
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Prescription p WHERE p.appointment.id = :appointmentId")
+    boolean existsByAppointmentId(@Param("appointmentId") Long appointmentId);
+}

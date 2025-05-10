@@ -1,0 +1,39 @@
+package com.sdp.health.service;
+
+import com.sdp.health.model.Appointment;
+import com.sdp.health.model.Prescription;
+import com.sdp.health.repository.AppointmentRepository;
+import com.sdp.health.repository.PrescriptionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PrescriptionServiceImpl implements PrescriptionService {
+
+    @Autowired
+    private PrescriptionRepository prescriptionRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Override
+    public Prescription createPrescription(Prescription prescription) {
+        Long appointmentId = prescription.getAppointment().getId();
+
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Appointment not found with ID: " + appointmentId));
+
+        if (!"COMPLETED".equalsIgnoreCase(appointment.getStatus())) {
+            throw new RuntimeException("Cannot create prescription. Consultation is not completed.");
+        }
+
+        prescription.setAppointment(appointment);
+        return prescriptionRepository.save(prescription);
+    }
+
+    @Override
+    public Prescription getPrescriptionByAppointmentId(Long appointmentId) {
+        return prescriptionRepository.findByAppointmentId(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Prescription not found for appointment ID: " + appointmentId));
+    }
+}

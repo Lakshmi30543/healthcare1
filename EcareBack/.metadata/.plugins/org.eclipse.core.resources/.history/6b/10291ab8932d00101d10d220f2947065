@@ -1,0 +1,19 @@
+package com.sdp.health.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.sdp.health.model.Prescription;
+
+import com.ecare.dto.PrescriptionDTO;
+import com.ecare.models.Prescription;
+
+import java.util.List;
+
+public interface PrescriptionService {
+    Prescription createPrescription(PrescriptionDTO prescriptionDTO);
+    List<Prescription> getPrescriptionsByPatient(Long patientId);
+    List<Prescription> getPrescriptionsByAppointment(Long appointmentId);
+}

@@ -1,0 +1,4 @@
+package com.sdp.health.service;
+public interface EmailService {
+    void sendPrescriptionEmail(Patient patient, Doctor doctor, Prescription prescription);
+}

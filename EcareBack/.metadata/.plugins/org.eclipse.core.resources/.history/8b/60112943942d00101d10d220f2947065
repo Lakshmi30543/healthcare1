@@ -1,0 +1,5 @@
+package com.sdp.health.service;
+
+public class EmailServiceImpl {
+
+}

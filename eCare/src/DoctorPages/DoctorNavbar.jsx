@@ -13,6 +13,7 @@ import Patients from './DoctorNavbar/Patients';
 import Profile from './DoctorNavbar/Profile';
 import Schedule from './DoctorNavbar/Schedule';
 
+
 export default function DoctorNavbar() {
   const { setIsDoctorLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ export default function DoctorNavbar() {
           <Route path="/doctor/appointments" element={<Appointments />} />
           <Route path="/doctor/patients" element={<Patients />} />
           <Route path="/doctor/profile" element={<Profile />} />
+          
           <Route path="/doctor/schedule" element={<Schedule />} />
         </Routes>
       </div>

@@ -1,0 +1,9 @@
+package com.sdp.health.service;
+
+import com.sdp.health.model.Doctor;
+import com.sdp.health.model.Patient;
+import com.sdp.health.model.Prescription;
+
+public interface EmailService {
+    void sendPrescriptionEmail(Patient patient, Doctor doctor, Prescription prescription);
+}

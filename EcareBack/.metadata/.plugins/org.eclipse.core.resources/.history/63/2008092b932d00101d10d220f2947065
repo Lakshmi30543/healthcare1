@@ -1,0 +1,36 @@
+package com.sdp.health.controller;
+
+import com.sdp.health.model.Prescription;
+import com.sdp.health.service.PrescriptionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/eCare/prescriptions")
+@CrossOrigin(origins = "*")
+public class PrescriptionController {
+
+    @Autowired
+    private PrescriptionService prescriptionService;
+
+    @PostMapping
+    public ResponseEntity<?> createPrescription(@RequestBody Prescription prescription) {
+        try {
+            Prescription saved = prescriptionService.createPrescription(prescription);
+            return ResponseEntity.ok(saved);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/appointment/{appointmentId}")
+    public ResponseEntity<?> getPrescriptionByAppointmentId(@PathVariable Long appointmentId) {
+        try {
+            Prescription prescription = prescriptionService.getPrescriptionByAppointmentId(appointmentId);
+            return ResponseEntity.ok(prescription);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}

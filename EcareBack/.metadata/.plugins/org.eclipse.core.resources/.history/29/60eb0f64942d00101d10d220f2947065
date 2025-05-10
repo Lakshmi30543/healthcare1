@@ -1,0 +1,25 @@
+package com.sdp.health.dto;
+
+package com.ecare.dto;
+
+public class PrescriptionDTO {
+    private Long appointmentId;
+    private String prescriptionText;
+
+    // Getters and Setters
+    public Long getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(Long appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+    public String getPrescriptionText() {
+        return prescriptionText;
+    }
+
+    public void setPrescriptionText(String prescriptionText) {
+        this.prescriptionText = prescriptionText;
+    }
+}

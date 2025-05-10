@@ -1,0 +1,5 @@
+package com.sdp.health.repository;
+
+public interface PrescriptionRepository {
+
+}

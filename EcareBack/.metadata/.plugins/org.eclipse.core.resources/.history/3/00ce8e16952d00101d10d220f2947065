@@ -1,0 +1,44 @@
+package com.sdp.health.controller;
+
+
+@RestController
+@RequestMapping("/ecate/prescriptions")
+public class PrescriptionController {
+
+    private final PrescriptionService prescriptionService;
+
+    @Autowired
+    public PrescriptionController(PrescriptionService prescriptionService) {
+        this.prescriptionService = prescriptionService;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createPrescription(@RequestBody PrescriptionDTO prescriptionDTO) {
+        try {
+            Prescription prescription = prescriptionService.createPrescription(prescriptionDTO);
+            return ResponseEntity.ok(prescription);
+        } catch (PrescriptionException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<?> getPatientPrescriptions(@PathVariable Long patientId) {
+        try {
+            List<Prescription> prescriptions = prescriptionService.getPrescriptionsByPatient(patientId);
+            return ResponseEntity.ok(prescriptions);
+        } catch (PrescriptionException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/appointment/{appointmentId}")
+    public ResponseEntity<?> getAppointmentPrescriptions(@PathVariable Long appointmentId) {
+        try {
+            List<Prescription> prescriptions = prescriptionService.getPrescriptionsByAppointment(appointmentId);
+            return ResponseEntity.ok(prescriptions);
+        } catch (PrescriptionException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+}
