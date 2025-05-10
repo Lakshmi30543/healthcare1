@@ -1,5 +1,5 @@
 import React from "react";
-import PHeroImg from "../assets/images/PHeroImg.jpg";
+import PHeroImg from "../assets/images/phero.jpg";
 import "./styles/pherosection.css";
 
 export default function PHeroSection() {

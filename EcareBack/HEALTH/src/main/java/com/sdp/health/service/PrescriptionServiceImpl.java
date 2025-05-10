@@ -16,7 +16,6 @@ import com.sdp.health.repository.AppointmentRepository;
 import com.sdp.health.repository.DoctorRepository;
 import com.sdp.health.repository.PatientRepository;
 import com.sdp.health.repository.PrescriptionRepository;
-import com.sdp.health.service.PrescriptionService;
 
 @Service
 public class PrescriptionServiceImpl implements PrescriptionService {
@@ -41,54 +40,42 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     @Transactional
     public Prescription createPrescription(PrescriptionDTO prescriptionDTO) {
-        // Log the incoming DTO for debugging
         System.out.println("Creating prescription from DTO: " + prescriptionDTO);
-        
+
         if (prescriptionDTO.getAppointmentId() == null) {
             throw new IllegalStateException("Appointment ID cannot be null");
         }
-        
+
         if (prescriptionDTO.getDoctorId() == null) {
             throw new IllegalStateException("Doctor ID cannot be null");
         }
-        
+
         if (prescriptionDTO.getPatientId() == null) {
             throw new IllegalStateException("Patient ID cannot be null");
         }
-        
+
         if (prescriptionDTO.getPrescriptionText() == null || prescriptionDTO.getPrescriptionText().trim().isEmpty()) {
             throw new IllegalStateException("Prescription text cannot be empty");
         }
-        
-        // Fetch appointment
-        Optional<Appointment> appointmentOpt = appointmentRepository.findById(prescriptionDTO.getAppointmentId());
-        if (!appointmentOpt.isPresent()) {
-            throw new IllegalStateException("Appointment not found with ID: " + prescriptionDTO.getAppointmentId());
-        }
-        
-        // Fetch doctor
-        Optional<Doctor> doctorOpt = doctorRepository.findById(prescriptionDTO.getDoctorId());
-        if (!doctorOpt.isPresent()) {
-            throw new IllegalStateException("Doctor not found with ID: " + prescriptionDTO.getDoctorId());
-        }
-        
-        // Fetch patient
-        Optional<Patient> patientOpt = patientRepository.findById(prescriptionDTO.getPatientId());
-        if (!patientOpt.isPresent()) {
-            throw new IllegalStateException("Patient not found with ID: " + prescriptionDTO.getPatientId());
-        }
-        
-        // Create and populate prescription
+
+        // Fetch entities
+        Appointment appointment = appointmentRepository.findById(prescriptionDTO.getAppointmentId())
+                .orElseThrow(() -> new IllegalStateException("Appointment not found with ID: " + prescriptionDTO.getAppointmentId()));
+
+        Doctor doctor = doctorRepository.findById(prescriptionDTO.getDoctorId())
+                .orElseThrow(() -> new IllegalStateException("Doctor not found with ID: " + prescriptionDTO.getDoctorId()));
+
+        Patient patient = patientRepository.findById(prescriptionDTO.getPatientId())
+                .orElseThrow(() -> new IllegalStateException("Patient not found with ID: " + prescriptionDTO.getPatientId()));
+
+        // Create and populate Prescription entity
         Prescription prescription = new Prescription();
-        prescription.setAppointment(appointmentOpt.get());
-        prescription.setDoctor(doctorOpt.get());
-        prescription.setPatient(patientOpt.get());
+        prescription.setAppointment(appointment);
+        prescription.setDoctor(doctor); // ✅ Correctly set Doctor object
+        prescription.setPatient(patient);
         prescription.setPrescriptionText(prescriptionDTO.getPrescriptionText());
-        
-        // No need to set createdAt as it has a default value
-        
+
         try {
-            // Save and return
             return prescriptionRepository.save(prescription);
         } catch (Exception e) {
             System.err.println("Error saving prescription: " + e.getMessage());

@@ -17,6 +17,7 @@ import ApplyBlood from "./ApplyBlood";
 import MyAppointments from "./MyAppointments";
 import "./styles/pnavbar.css";
 import PatientProfile from "./PatientProfile";
+import Report from "./Report";
 
 function PatientNavbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -61,6 +62,9 @@ function PatientNavbar() {
           <Link to="/patient/myappointments" className={`nav-link ${location.pathname === "/patient/myappointments" ? "active" : ""}`}>
             <FaCalendarCheck style={{marginRight: "7px"}} /> My Appointments
           </Link>
+          <Link to="/patient/report" className={`nav-link ${location.pathname === "/patient/report" ? "active" : ""}`}>
+            <FaCalendarCheck style={{marginRight: "7px"}} /> Report
+          </Link>
         </div>
 
         <div className="navbar-right">
@@ -91,8 +95,8 @@ function PatientNavbar() {
           <Route path="/patient/bloodservice" element={<BloodService />} />
           <Route path="/patient/applyblood" element={<ApplyBlood />} />
           <Route path="/patient/myappointments" element={<MyAppointments/>}/>
-          <Route path="/patient/myappointments" element={<MyAppointments/>}/>
           <Route path="/patient/profile" element={<PatientProfile/>}/>
+          <Route path="/patient/report" element={<Report/>}/>
           
         </Routes>
       </div>
