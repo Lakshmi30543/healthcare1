@@ -1,8 +1,6 @@
 package com.sdp.health.service;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,23 +40,26 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public Prescription createPrescription(PrescriptionDTO prescriptionDTO) {
         System.out.println("Creating prescription from DTO: " + prescriptionDTO);
 
-        if (prescriptionDTO.getAppointmentId() == null) {
+        // Validation
+        if (prescriptionDTO.getAppointmentId() == null)
             throw new IllegalStateException("Appointment ID cannot be null");
-        }
 
-        if (prescriptionDTO.getDoctorId() == null) {
+        if (prescriptionDTO.getDoctorId() == null)
             throw new IllegalStateException("Doctor ID cannot be null");
-        }
 
-        if (prescriptionDTO.getPatientId() == null) {
+        if (prescriptionDTO.getPatientId() == null)
             throw new IllegalStateException("Patient ID cannot be null");
-        }
 
-        if (prescriptionDTO.getPrescriptionText() == null || prescriptionDTO.getPrescriptionText().trim().isEmpty()) {
+        if (prescriptionDTO.getPrescriptionText() == null || prescriptionDTO.getPrescriptionText().trim().isEmpty())
             throw new IllegalStateException("Prescription text cannot be empty");
-        }
 
-        // Fetch entities
+        if (prescriptionDTO.getMedicalIssue() == null || prescriptionDTO.getMedicalIssue().trim().isEmpty())
+            throw new IllegalStateException("Medical issue cannot be empty");
+
+        if (prescriptionDTO.getDiagnosis() == null || prescriptionDTO.getDiagnosis().trim().isEmpty())
+            throw new IllegalStateException("Diagnosis cannot be empty");
+
+        // Fetch related entities
         Appointment appointment = appointmentRepository.findById(prescriptionDTO.getAppointmentId())
                 .orElseThrow(() -> new IllegalStateException("Appointment not found with ID: " + prescriptionDTO.getAppointmentId()));
 
@@ -71,9 +72,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         // Create and populate Prescription entity
         Prescription prescription = new Prescription();
         prescription.setAppointment(appointment);
-        prescription.setDoctor(doctor); // ✅ Correctly set Doctor object
+        prescription.setDoctor(doctor);
         prescription.setPatient(patient);
         prescription.setPrescriptionText(prescriptionDTO.getPrescriptionText());
+        prescription.setMedicalIssue(prescriptionDTO.getMedicalIssue());
+        prescription.setDiagnosis(prescriptionDTO.getDiagnosis());
 
         try {
             return prescriptionRepository.save(prescription);

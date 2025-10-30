@@ -28,7 +28,7 @@ const PrescriptionReportModal = ({ show, handleClose, patientId, patientName }) 
       setError(null);
       
       console.log(`Fetching prescriptions for patient ID: ${patientId}`);
-      const response = await axios.get(`${config.url}/ecare/prescriptions/patient/${patientId}`);
+      const response = await axios.get(`${config.url}/eCare/prescriptions/patient/${patientId}`);
       console.log('Prescription history response:', response.data);
       
       setPrescriptions(response.data);
@@ -87,16 +87,16 @@ const PrescriptionReportModal = ({ show, handleClose, patientId, patientName }) 
 
 const PrescriptionModal = ({ show, handleClose, appointment }) => {
   const [prescriptionText, setPrescriptionText] = useState('');
+  const [medicalIssue, setMedicalIssue] = useState('');
+  const [diagnosis, setDiagnosis] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [debugInfo, setDebugInfo] = useState(null);
 
-  // Log appointment data when component mounts
   useEffect(() => {
     if (appointment) {
       console.log('Appointment data:', appointment);
       console.log('Patient data:', appointment.patient);
-      
-      // Store debug info
+
       setDebugInfo({
         appointmentId: appointment.id,
         doctorId: sessionStorage.getItem('userId'),
@@ -109,36 +109,28 @@ const PrescriptionModal = ({ show, handleClose, appointment }) => {
   const handleSubmit = async () => {
     try {
       setIsSending(true);
-      
-      // Get the logged in doctor's ID
+
       const doctorId = sessionStorage.getItem('userId');
-      
-      // Ensure IDs are parsed as numbers (Long in Java)
+
+      // Create payload with all new fields
       const payload = {
         appointmentId: parseInt(appointment.id, 10),
         doctorId: parseInt(doctorId, 10),
         patientId: parseInt(appointment.patient?.id || appointment.patientId, 10),
-        prescriptionText
+        medicalIssue,
+        diagnosis,
+        prescriptionText,
       };
-      
-      // Log complete request data
+
       console.log('Sending prescription request:', payload);
-      
-      // Make the API call
-      const response = await axios.post(`${config.url}/ecare/prescriptions/create`, payload);
-      
+
+      const response = await axios.post(`${config.url}/eCare/prescriptions/create`, payload);
+
       console.log('Prescription response:', response.data);
       handleClose();
       alert('Prescription saved and sent to patient successfully!');
     } catch (error) {
       console.error('Error saving prescription:', error);
-      
-      // Enhanced error logging
-      if (error.response) {
-        console.error('Error response status:', error.response.status);
-        console.error('Error response data:', error.response.data);
-      }
-      
       alert(`Failed to save prescription: ${error.response?.data || error.message}`);
     } finally {
       setIsSending(false);
@@ -151,31 +143,66 @@ const PrescriptionModal = ({ show, handleClose, appointment }) => {
         <Modal.Title>Create Prescription</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form.Group>
-          <Form.Label>Prescription for {appointment.patient?.fullName || appointment.patientName}</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={10}
-            value={prescriptionText}
-            onChange={(e) => setPrescriptionText(e.target.value)}
-            placeholder="Enter prescription details..."
-          />
-        </Form.Group>
-        
-        {/* Debug information section (only visible in development) */}
-        {process.env.NODE_ENV === 'development' && debugInfo && (
-          <div style={{ marginTop: '20px', padding: '10px', background: '#f8f9fa', borderRadius: '5px' }}>
-            <h6>Debug Information:</h6>
-            <pre style={{ fontSize: '12px' }}>{JSON.stringify(debugInfo, null, 2)}</pre>
-          </div>
-        )}
+        <Form>
+          {/* Patient info */}
+          <Form.Group className="mb-3">
+            <Form.Label>Prescription for {appointment.patient?.fullName || appointment.patientName}</Form.Label>
+          </Form.Group>
+
+          {/* Medical Issue */}
+          <Form.Group className="mb-3">
+            <Form.Label>Medical Issue</Form.Label>
+            <Form.Control
+              type="text"
+              value={medicalIssue}
+              onChange={(e) => setMedicalIssue(e.target.value)}
+              placeholder="Enter patient's medical issue"
+            />
+          </Form.Group>
+
+          {/* Diagnosis */}
+          <Form.Group className="mb-3">
+            <Form.Label>Diagnosis</Form.Label>
+            <Form.Control
+              type="text"
+              value={diagnosis}
+              onChange={(e) => setDiagnosis(e.target.value)}
+              placeholder="Enter diagnosis details"
+            />
+          </Form.Group>
+
+          {/* Prescription Text */}
+          <Form.Group className="mb-3">
+            <Form.Label>Prescription</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={8}
+              value={prescriptionText}
+              onChange={(e) => setPrescriptionText(e.target.value)}
+              placeholder="Enter medicines, dosage, and instructions..."
+            />
+          </Form.Group>
+
+          {/* Debug (optional) */}
+          {process.env.NODE_ENV === 'development' && debugInfo && (
+            <div style={{ marginTop: '20px', padding: '10px', background: '#f8f9fa', borderRadius: '5px' }}>
+              <h6>Debug Information:</h6>
+              <pre style={{ fontSize: '12px' }}>{JSON.stringify(debugInfo, null, 2)}</pre>
+            </div>
+          )}
+        </Form>
       </Modal.Body>
+
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={handleSubmit} disabled={isSending || !prescriptionText.trim()}>
-          {isSending ? 'Sending...' : 'Save & Send'}
+        <Button
+          variant="primary"
+          onClick={handleSubmit}
+          disabled={isSending || !prescriptionText.trim() || !diagnosis.trim() || !medicalIssue.trim()}
+        >
+          {isSending ? 'Saving...' : 'Save & Send'}
         </Button>
       </Modal.Footer>
     </Modal>
@@ -209,7 +236,7 @@ const Schedule = () => {
     try {
       setIsLoading(true);
       const doctorId = sessionStorage.getItem('userId');
-      const response = await axios.get(`${config.url}/eCare/appointments/doctor/${doctorId}`);
+      const response = await axios.get(`${config.url}/eCare/doctor/appointments/${doctorId}`);
       const formattedAppointments = response.data.map(apt => {
         const startDateTime = moment(`${apt.appointmentDate} ${apt.appointmentTime}`, "YYYY-MM-DD hh:mm A").toDate();
         const endDateTime = moment(startDateTime).add(30, 'minutes').toDate();

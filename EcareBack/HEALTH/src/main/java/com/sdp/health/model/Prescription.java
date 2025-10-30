@@ -1,15 +1,7 @@
 package com.sdp.health.model;
 
 import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "prescriptions")
@@ -37,8 +29,14 @@ public class Prescription {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Getters and setters
+    // 🩺 New Fields Added
+    @Column(name = "medical_issue", length = 255, nullable = false)
+    private String medicalIssue;
 
+    @Column(name = "diagnosis", columnDefinition = "TEXT", nullable = false)
+    private String diagnosis;
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -85,5 +83,21 @@ public class Prescription {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getMedicalIssue() {
+        return medicalIssue;
+    }
+
+    public void setMedicalIssue(String medicalIssue) {
+        this.medicalIssue = medicalIssue;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
     }
 }

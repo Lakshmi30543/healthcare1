@@ -147,7 +147,7 @@ public class PatientServiceImpl implements PatientService {
                 }
 
                 String uniqueFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                String uploadDir = "C:\\Users\\sreyu\\Desktop\\ALLPROJECT\\Health_Care_Appointment_System\\eCare\\public\\profile_pics\\"; // Adjust path
+                String uploadDir = "C:\\Users\\Asus\\Desktop\\DevOpsSDP\\SDP2\\eCare\\public\\profile_pics\\"; // Adjust path
                 String filePath = uploadDir + uniqueFileName;
 
                 file.transferTo(new File(filePath));

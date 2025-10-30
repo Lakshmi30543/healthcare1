@@ -12,7 +12,7 @@ import com.sdp.health.model.Prescription;
 import com.sdp.health.service.PrescriptionService;
 
 @RestController
-@RequestMapping("/ecare/prescriptions")
+@RequestMapping("/eCare/prescriptions")
 @CrossOrigin("*")
 public class PrescriptionController {
 
